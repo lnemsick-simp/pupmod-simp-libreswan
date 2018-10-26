@@ -61,57 +61,6 @@ stages:
   - acceptance
   - deploy
 
-# Puppet 4.7 for PE 2016.4 LTS Support (EOL: 2018-10-21)
-# See: https://puppet.com/misc/puppet-enterprise-lifecycle
-# --------------------------------------
-pup4_7-validation:
-  stage: validation
-  tags:
-    - docker
-  image: ruby:2.1
-  variables:
-    PUPPET_VERSION: '~> 4.7.0'
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  <<: *validation_checks
-
-pup4_7-unit:
-  stage: unit
-  tags:
-    - docker
-  image: ruby:2.1
-  variables:
-    PUPPET_VERSION: '~> 4.7.0'
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  <<: *spec_tests
-
-
-# Puppet 4.8 for SIMP 6.0 + 6.1 support
-# --------------------------------------
-pup4_8-validation:
-  stage: validation
-  tags:
-    - docker
-  image: ruby:2.1
-  variables:
-    PUPPET_VERSION: '~> 4.8.0'
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  <<: *validation_checks
-
-pup4_8-unit:
-  stage: unit
-  tags:
-    - docker
-  image: ruby:2.1
-  variables:
-    PUPPET_VERSION: '~> 4.8.0'
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  <<: *spec_tests
-
-
 # Puppet 4.10 for PE 2017.2 support (EOL:2018-02-21)
 # See: https://puppet.com/misc/puppet-enterprise-lifecycle
 # --------------------------------------
@@ -225,7 +174,7 @@ acceptance-default:
   <<: *cache_bundler
   <<: *setup_bundler_env
   variables:
-    PUPPET_VERSION: '4.10'
+    PUPPET_VERSION: '~> 4.10'
   script:
     - bundle exec rake spec_clean
     - bundle exec rake beaker:suites[default]
@@ -238,7 +187,7 @@ acceptance-fips:
   <<: *setup_bundler_env
   <<: *only_with_SIMP_FULL_MATRIX
   variables:
-    PUPPET_VERSION: '4.10'
+    PUPPET_VERSION: '~> 4.10'
     BEAKER_fips: 'yes'
   script:
     - bundle exec rake spec_clean
@@ -252,20 +201,19 @@ acceptance-oel:
   <<: *setup_bundler_env
   <<: *only_with_SIMP_FULL_MATRIX
   variables:
-    PUPPET_VERSION: '4.10'
+    PUPPET_VERSION: '~> 4.10'
   script:
     - bundle exec rake beaker:suites[default,oel]
 
 acceptance-oel-fips:
   stage: acceptance
-  allow_failure: true
   tags:
     - beaker
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *only_with_SIMP_FULL_MATRIX
   variables:
-    PUPPET_VERSION: '4.10'
+    PUPPET_VERSION: '~> 4.10'
     BEAKER_fips: 'yes'
   script:
     - bundle exec rake beaker:suites[default,oel]
@@ -309,7 +257,6 @@ acceptance-oel-puppet5-default:
 
 acceptance-oel-fips-puppet5-default:
   stage: acceptance
-  allow_failure: true
   tags:
     - beaker
   <<: *cache_bundler
