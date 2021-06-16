@@ -14,7 +14,7 @@ HOSTS:
       - libreswan
       - default
     platform:   el-8-x86_64
-    box:        generic/centos8
+    box:        centos/8
     hypervisor: <%= hypervisor %>
   right8:
     roles:
@@ -23,7 +23,7 @@ HOSTS:
       - agent
       - libreswan
     platform:   el-8-x86_64
-    box:        generic/centos8
+    box:        centos/8
     hypervisor: <%= hypervisor %>
   left7:
     roles:
